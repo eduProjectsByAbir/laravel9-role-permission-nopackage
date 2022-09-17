@@ -12,10 +12,10 @@
         <title>Dashboard</title>
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
+        <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     </head>
     <body>
         <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200 font-roboto">
@@ -31,7 +31,7 @@
                 </main>
             </div>
         </div>
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
         @yield('script')
     </body>
 </html>
