@@ -19,7 +19,7 @@
         </div>
     </div>
     <div class="w-1/3 text-right">
-        <a href="#" class="text-indigo-600 hover:text-indigo-900">
+        <a href="{{ route('admin.roles.create') }}" class="text-indigo-600 hover:text-indigo-900">
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                 Create New
             </button>

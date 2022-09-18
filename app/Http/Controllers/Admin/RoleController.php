@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Brian2694\Toastr\Facades\Toastr;
 
 class RoleController extends Controller
 {
@@ -26,7 +27,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.role.create');
     }
 
     /**
@@ -37,7 +38,16 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|unique:roles,name'
+        ]);
+
+        $created = Role::create([
+            'name' => $request->name
+        ]);
+
+        $created ? TosterMessage('Role Created Successfully!', 'Success') : TosterMessage('Role Creation Failed!', 'Error');
+        return back();
     }
 
     /**
