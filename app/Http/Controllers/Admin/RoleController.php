@@ -92,6 +92,8 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $deleted = Role::findOrFail($id)->delete();
+        $deleted ? TosterMessage('Role Deleted Successfully!', 'Success') : TosterMessage('Role Deleting Failed!', 'Error');
+        return back();
     }
 }
