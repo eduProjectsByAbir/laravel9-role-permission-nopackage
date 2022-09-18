@@ -16,7 +16,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::whereNotIn('name', ['admin'])->latest()->paginate(10);
+        $roles = Role::whereNotIn('name', ['admin'])->paginate(10);
         return view('admin.role.index', ['roles' => $roles]);
     }
 
@@ -67,9 +67,8 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
-        $role = Role::findOrFail($id);
         if($role->name == 'admin') {
             TosterMessage('Sorry! Permission denied!', 'Error');
             return back();
@@ -84,13 +83,13 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Role $role)
     {
         $request->validate([
-            'name' => 'required|string|unique:roles,name,'.$id
+            'name' => 'required|string|unique:roles,name,'.$role->id
         ]);
 
-        $updated = Role::findOrFail($id)->update([
+        $updated = $role->update([
             'name' => $request->name
         ]);
 
@@ -104,9 +103,8 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        $role = Role::findOrFail($id);
         if($role->name == 'admin') {
             TosterMessage('Sorry! Permission denied!', 'Error');
             return back();
