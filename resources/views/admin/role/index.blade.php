@@ -85,6 +85,7 @@
                             <td class="px-6 py-4 whitespace-no-wrap border-b text-center border-gray-200" colspan="4">
                                 No Role Found...
                             </td>
+                            </tr>
                     @endforelse
                 </tbody>
             </table>

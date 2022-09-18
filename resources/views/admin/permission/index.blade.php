@@ -6,15 +6,16 @@
     </div>
     <div class="w-1/3">
         <div class="inline-block relative w-64">
-            <select class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-              <option>Filter by</option>
-              <option>Option 2</option>
-              <option>Option 3</option>
+            <select
+                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                <option>Filter by</option>
+                <option>Option 2</option>
+                <option>Option 3</option>
             </select>
-          </div>
+        </div>
     </div>
     <div class="w-1/3 text-right">
-        <a href="#" class="text-indigo-600 hover:text-indigo-900">
+        <a href="{{ route('admin.permissions.create') }}" class="text-indigo-600 hover:text-indigo-900">
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                 Create New
             </button>
@@ -35,44 +36,79 @@
                             class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                             Name</th>
                         <th
-                            class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                            Permissions</th>
-                        <th
                             class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                             Actions</th>
                     </tr>
                 </thead>
 
                 <tbody class="bg-white">
+                    @forelse ($permissions as $permission)
                     <tr>
                         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                            1
+                            {{ $permission->id }}
                         </td>
                         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                            <div class="text-sm leading-5 text-gray-900">Software Engineer</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                            <span
-                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                            <div class="text-sm leading-5 text-gray-900">{{ $permission->name }}</div>
                         </td>
                         <td
-                            class="px-6 py-4 whitespace-no-wrap text-center border-b border-gray-200 text-sm leading-5 font-medium">
-                            <a href="#" class="text-indigo-600 hover:text-indigo-900"><button
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                                    Edit
-                                </button></a>
-                            <a href="#" class="text-indigo-600 hover:text-indigo-900"><button
-                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
-                                    Delete
-                                </button></a>
-                        </td>
+                        class="px-6 py-4 whitespace-no-wrap text-center border-b border-gray-200 text-sm leading-5 font-medium">
+                        <a href="{{ route('admin.permissions.edit', $permission->id) }}"
+                            class=""><button
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                Edit
+                            </button></a>
+                        <a href="javascript:void(0)"
+                            onclick="deleteFunction();"><button
+                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
+                                Delete
+                            </button></a>
+                        <form method="POST" id="delete"
+                            action="{{ route('admin.permissions.destroy', $permission->id) }}">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                    </td>
                     </tr>
+                    @empty
+                    <tr>
+                        <td class="px-6 py-4 whitespace-no-wrap border-b text-center border-gray-200" colspan="4">
+                            No Permissions Found...
+                        </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
             <div>
-                {{-- {{ $permissions->links() }} --}}
+                {{ $permissions->links() }}
             </div>
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+    function deleteFunction() {
+        event.preventDefault(); // prevent form submit
+        var form = document.getElementById('delete'); // deleting the form
+        Swal.fire({
+                title: "Are you sure?",
+                text: "But you will still be able to retrieve the data.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel please!",
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                form.submit();
+                // Swal.fire('Saved!', '', 'success')
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        });
+    }
+
+</script>
 @endsection

@@ -26,7 +26,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.permission.create');
     }
 
     /**
@@ -37,7 +37,16 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|unique:permissions,name'
+        ]);
+
+        $created = Permission::create([
+            'name' => $request->name
+        ]);
+
+        $created ? TosterMessage('Permission Created Successfully!', 'Success') : TosterMessage('Permission Creation Failed!', 'Error');
+        return back();
     }
 
     /**
@@ -59,7 +68,8 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $permission = Permission::findOrFail($id);
+        return view('admin.permission.edit', ['permission' => $permission]);
     }
 
     /**
@@ -71,7 +81,16 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|unique:permissions,name,'.$id
+        ]);
+
+        $updated = Permission::findOrFail($id)->update([
+            'name' => $request->name
+        ]);
+
+        $updated ? TosterMessage('Permission Updated Successfully!', 'Success') : TosterMessage('Permission Updating Failed!', 'Error');
+        return back();
     }
 
     /**
@@ -82,6 +101,8 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $deleted = Permission::findOrFail($id)->delete();
+        $deleted ? TosterMessage('Permission Deleted Successfully!', 'Success') : TosterMessage('Permission Deleting Failed!', 'Error');
+        return back();
     }
 }

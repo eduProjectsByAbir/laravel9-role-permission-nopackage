@@ -11,5 +11,5 @@ Route::middleware(['auth', 'role:admin'])
     ->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
         Route::resource('/roles', RoleController::class);
-        Route::resource('/premissions', PermissionController::class);
+        Route::resource('/permissions', PermissionController::class);
     });
