@@ -10,6 +10,7 @@ Route::middleware(['auth', 'role:admin'])
     ->name('admin.')
     ->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+        Route::post('/roles/set/permissions/{role}', [RoleController::class, 'setPermissions'])->name('roles.permissions');
         Route::resource('/roles', RoleController::class);
         Route::resource('/permissions', PermissionController::class);
     });

@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
         <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
+        @yield('styles')
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])

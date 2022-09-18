@@ -40,7 +40,7 @@
                             class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                             Name</th>
                         <th
-                            class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                             Permissions</th>
                         <th
                             class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -57,19 +57,22 @@
                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                 <div class="text-sm leading-5 text-gray-900">{{ $role->name }}</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                <span
-                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-center">
+                                @foreach($role->permissions as $permission)
+                                    <span
+                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-red-800">{{ $permission->name }}</span>
+                                @endforeach
+                                <a href="{{ route('admin.roles.show', $role->id) }}"><span
+                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-500 text-black-800">
+                                        <x-syncicon /> Set New</span></a>
                             </td>
                             <td
                                 class="px-6 py-4 whitespace-no-wrap text-center border-b border-gray-200 text-sm leading-5 font-medium">
-                                <a href="{{ route('admin.roles.edit', $role->id) }}"
-                                    class=""><button
+                                <a href="{{ route('admin.roles.edit', $role->id) }}"><button
                                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                                         Edit
                                     </button></a>
-                                <a href="javascript:void(0)"
-                                    onclick="deleteFunction();"><button
+                                <a href="javascript:void(0)" onclick="deleteFunction();"><button
                                         class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
                                         Delete
                                     </button></a>
@@ -85,7 +88,7 @@
                             <td class="px-6 py-4 whitespace-no-wrap border-b text-center border-gray-200" colspan="4">
                                 No Role Found...
                             </td>
-                            </tr>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>
@@ -101,13 +104,13 @@
         event.preventDefault(); // prevent form submit
         var form = document.getElementById('delete'); // deleting the form
         Swal.fire({
-                title: "Are you sure?",
-                text: "But you will still be able to retrieve the data.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "No, cancel please!",
+            title: "Are you sure?",
+            text: "But you will still be able to retrieve the data.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel please!",
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {

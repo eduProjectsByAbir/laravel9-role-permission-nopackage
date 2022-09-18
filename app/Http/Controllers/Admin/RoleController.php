@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
@@ -16,7 +17,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::whereNotIn('name', ['admin'])->paginate(10);
+        $roles = Role::whereNotIn('name', ['admin'])->with('permissions')->withCount('permissions')->paginate(10);
         return view('admin.role.index', ['roles' => $roles]);
     }
 
@@ -56,9 +57,10 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Role $role)
     {
-        //
+        $permissions = Permission::all();
+        return view('admin.role.set-permission', ['role' => $role, 'permissions' => $permissions]);
     }
 
     /**
@@ -111,6 +113,14 @@ class RoleController extends Controller
         }
         $deleted = $role->delete();
         $deleted ? TosterMessage('Role Deleted Successfully!', 'Success') : TosterMessage('Role Deleting Failed!', 'Error');
+        return back();
+    }
+
+    public function setPermissions(Role $role, Request $request)
+    {
+        $role->permissions()->sync($request->permissions);
+        // $deleted = $role->delete();
+        // $deleted ? TosterMessage('Role Deleted Successfully!', 'Success') : TosterMessage('Role Deleting Failed!', 'Error');
         return back();
     }
 }
