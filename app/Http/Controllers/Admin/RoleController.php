@@ -16,7 +16,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::latest()->paginate(10);
+        $roles = Role::whereNotIn('name', ['admin'])->latest()->paginate(10);
         return view('admin.role.index', ['roles' => $roles]);
     }
 
@@ -70,6 +70,10 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::findOrFail($id);
+        if($role->name == 'admin') {
+            TosterMessage('Sorry! Permission denied!', 'Error');
+            return back();
+        }
         return view('admin.role.edit', ['role' => $role]);
     }
 
@@ -102,7 +106,12 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        $deleted = Role::findOrFail($id)->delete();
+        $role = Role::findOrFail($id);
+        if($role->name == 'admin') {
+            TosterMessage('Sorry! Permission denied!', 'Error');
+            return back();
+        }
+        $deleted = $role->delete();
         $deleted ? TosterMessage('Role Deleted Successfully!', 'Success') : TosterMessage('Role Deleting Failed!', 'Error');
         return back();
     }
