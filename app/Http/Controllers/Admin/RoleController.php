@@ -69,7 +69,8 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        //
+        $role = Role::findOrFail($id);
+        return view('admin.role.edit', ['role' => $role]);
     }
 
     /**
@@ -81,7 +82,16 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|unique:roles,name'
+        ]);
+
+        $updated = Role::findOrFail($id)->update([
+            'name' => $request->name
+        ]);
+
+        $updated ? TosterMessage('Role Updated Successfully!', 'Success') : TosterMessage('Role Updating Failed!', 'Error');
+        return back();
     }
 
     /**

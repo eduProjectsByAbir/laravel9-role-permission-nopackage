@@ -2,7 +2,7 @@
 @section('body')
 <div class="flex mb-4">
     <div class="w-1/3">
-        <h3 class="text-gray-700 text-3xl font-medium">Create Role</h3>
+        <h3 class="text-gray-700 text-3xl font-medium">Edit Role</h3>
     </div>
     <div class="w-1/3">
 
@@ -21,15 +21,16 @@
         <div class="align-middle inline-block min-w-full overflow-hidden sm:rounded-lg border-b border-gray-200">
             <div class="w-full max-w-xs">
                 <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-                    action="{{ route('admin.roles.store') }}" method="post">
+                    action="{{ route('admin.roles.update', $role->id) }}" method="post">
                     @csrf
+                    @method('PUT')
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
                             Name
                         </label>
                         <input
                             class="shadow appearance-none border @error('name') border-red-500 @enderror rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="name" type="text" placeholder="Enter Role Name" name="name" value="{{ old('name') }}">
+                            id="name" type="text" placeholder="Enter Role Name" name="name" value="{{ old('name', $role->name) }}">
                         @error('name')
                             <div class="text-sm text-red-600">{{ $message }}</div>
                         @enderror
