@@ -118,9 +118,8 @@ class RoleController extends Controller
 
     public function setPermissions(Role $role, Request $request)
     {
-        $role->permissions()->sync($request->permissions);
-        // $deleted = $role->delete();
-        // $deleted ? TosterMessage('Role Deleted Successfully!', 'Success') : TosterMessage('Role Deleting Failed!', 'Error');
+        $sync = $role->permissions()->sync($request->permissions);
+        $sync ? TosterMessage('Permissions Updated Successfully!', 'Success') : TosterMessage('Permission Updating Failed!', 'Error');
         return back();
     }
 }

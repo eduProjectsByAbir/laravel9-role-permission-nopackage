@@ -21,7 +21,7 @@
         <div class="align-middle inline-block min-w-full overflow-hidden sm:rounded-lg">
             <div class="flex m-2 p-2">
                 <div class="max-w-md mx-auto">
-                    <h1 class="max-w-sm mx-auto text-green-700 font-bold">User Has Permissions For </h1><br>
+                    <h1 class="max-w-sm mx-auto text-green-700 font-bold"><strong>{{ $role->name }}</strong> Has Permissions For </h1><br>
                     @foreach ($role->permissions as $item)
                         <span class="m-2 p-2 bg-indigo-300 rounded-md">{{ $item->name }}</span>
                     @endforeach
@@ -30,7 +30,7 @@
             <form class="w-full max-w-lg bg-white" action="{{ route('admin.roles.permissions', $role->id) }}" method="post">
                 @csrf
                 <div class="inline-block relative w-80 h-40">
-                    <label class="block text-gray-600 pt-2 pb-2 text-bold" for="Multiselect">Set Permissions for <b class="text-green-700">{{ $role->name }}</b></label>
+                    <label class="block text-gray-600 pt-2 pb-2 text-bold" for="Multiselect">Set Permissions</label>
                     <select
                         class="block w-full rounded-sm cursor-pointer focus:outline-none"
                         multiple name="permissions[]" id="permissions" autocomplete="off">
