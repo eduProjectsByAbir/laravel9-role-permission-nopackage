@@ -18,6 +18,7 @@ class AdminSeeder extends Seeder
     {
         $userRole = Role::create(['name' => 'user']);
         $adminRole = Role::create(['name' => 'admin']);
+        $authorRole = Role::create(['name' => 'author']);
 
         // admin id
         User::create([
@@ -34,6 +35,14 @@ class AdminSeeder extends Seeder
             'password' => bcrypt('password'), //password
             'email_verified_at' => now(),
             'role_id' => $userRole->id,
+        ]);
+        // author id
+        User::create([
+            'name' => 'Author',
+            'email' => 'author@mail.com',
+            'password' => bcrypt('password'), //password
+            'email_verified_at' => now(),
+            'role_id' => $authorRole->id,
         ]);
     }
 }

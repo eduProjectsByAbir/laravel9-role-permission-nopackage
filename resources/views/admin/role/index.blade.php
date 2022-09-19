@@ -72,15 +72,17 @@
                                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                                         Edit
                                     </button></a>
-                                <a href="javascript:void(0)" onclick="deleteFunction();"><button
-                                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
-                                        Delete
-                                    </button></a>
-                                <form method="POST" id="delete"
-                                    action="{{ route('admin.roles.destroy', $role->id) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
+                                @if($role->name !== 'admin')
+                                    <a href="javascript:void(0)" onclick="deleteFunction();"><button
+                                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
+                                            Delete
+                                        </button></a>
+                                    <form method="POST" id="delete"
+                                        action="{{ route('admin.roles.destroy', $role->id) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @empty
