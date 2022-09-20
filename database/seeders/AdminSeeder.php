@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -44,5 +45,13 @@ class AdminSeeder extends Seeder
             'email_verified_at' => now(),
             'role_id' => $authorRole->id,
         ]);
+
+        $permissions = ['view-any-post', 'view-post', 'create-post', 'update-post', 'delete-post'];
+
+        foreach($permissions as $permission){
+            Permission::create([
+                'name' => $permission
+            ]);
+        }
     }
 }
