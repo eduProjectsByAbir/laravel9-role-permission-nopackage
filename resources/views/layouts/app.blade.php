@@ -9,7 +9,8 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
-
+        <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
@@ -29,5 +30,9 @@
                 {{ $slot }}
             </main>
         </div>
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
+        <script src="{{ asset('js/toastr.min.js') }}"></script>
+        {!! Toastr::message() !!}
+        <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
     </body>
 </html>

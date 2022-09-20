@@ -20,7 +20,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -31,7 +31,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create', Post::class);
+        $request->validate([
+            'title' => 'required',
+            'body' => 'required'
+        ]);
+
+        $create = Post::create($request->except('_token'));
+
+        return to_route('posts.index');
     }
 
     /**
@@ -53,7 +61,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit', ['post' => $post]);
     }
 
     /**
@@ -65,7 +73,15 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $this->authorize('update', Post::class);
+        $request->validate([
+            'title' => 'required',
+            'body' => 'required'
+        ]);
+
+        $post->update($request->except('_token'));
+
+        return to_route('posts.index');
     }
 
     /**
@@ -76,6 +92,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $this->authorize('delete', Post::class);
+        $post->delete();
+        return to_route('posts.index');
     }
 }

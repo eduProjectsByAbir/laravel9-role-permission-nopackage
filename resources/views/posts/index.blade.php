@@ -9,11 +9,12 @@
             </div>
             <div class="w-1/3 text-right">
                 @can('create', App\Models\Post::class)
-                <a href="{{ route('posts.create') }}" class="text-indigo-600 hover:text-indigo-900">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                        Add Post
-                    </button>
-                </a>
+                    <a href="{{ route('posts.create') }}"
+                        class="text-indigo-600 hover:text-indigo-900">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                            Add Post
+                        </button>
+                    </a>
                 @endcan
             </div>
         </div>
@@ -22,7 +23,8 @@
     <div class="px-12">
         <div class="flex flex-col mt-8 mb-8">
             <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-                <div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
+                <div
+                    class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
                     <table class="min-w-full">
                         <thead>
                             <tr>
@@ -40,7 +42,7 @@
                                     Actions</th>
                             </tr>
                         </thead>
-        
+
                         <tbody class="bg-white">
                             @forelse($posts as $post)
                                 <tr>
@@ -55,24 +57,29 @@
                                     </td>
                                     <td
                                         class="px-6 py-4 whitespace-no-wrap text-center border-b border-gray-200 text-sm leading-5 font-medium">
-                                        <a href="{{ route('posts.edit', $post->id) }}"><button
-                                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                                                Edit
-                                            </button></a>
-                                        <a href="javascript:void(0)" onclick="deleteFunction();"><button
-                                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
-                                                Delete
-                                            </button></a>
-                                        <form method="POST" id="delete"
-                                            action="{{ route('posts.destroy', $post->id) }}">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
+                                        @can('update', $post)
+                                            <a href="{{ route('posts.edit', $post->id) }}"><button
+                                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                                    Edit
+                                                </button></a>
+                                        @endcan
+                                        @can('delete', $post)
+                                            <a href="javascript:void(0)" onclick="deleteFunction();"><button
+                                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
+                                                    Delete
+                                                </button></a>
+                                            <form method="POST" id="delete"
+                                                action="{{ route('posts.destroy', $post->id) }}">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                        @endcan
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-no-wrap border-b text-center border-gray-200" colspan="4">
+                                    <td class="px-6 py-4 whitespace-no-wrap border-b text-center border-gray-200"
+                                        colspan="4">
                                         No Post Found...
                                     </td>
                                 </tr>
@@ -84,5 +91,28 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+    <script>
+        function deleteFunction() {
+            event.preventDefault(); // prevent form submit
+            var form = document.getElementById('delete'); // deleting the form
+            Swal.fire({
+                title: "Are you sure?",
+                text: "But you will still be able to retrieve the data.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel please!",
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    form.submit();
+                    // Swal.fire('Saved!', '', 'success')
+                } else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info')
+                }
+            });
+        }
 
+    </script>
+</x-app-layout>
